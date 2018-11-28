@@ -1,11 +1,22 @@
 import React from 'react'
 
-export default (props) => {
-    return (
-        <section>
-            <div id="preview">
-                <p style={{ fontSize: "2rem" }}>{ props.text }</p>
-            </div>
-        </section>
-    )
+export default class Preview extends React.Component {
+
+    setInnerHTML (html, id = 'preview') {
+        document.getElementById(id).innerHTML = html        
+    }
+    componentDidMount () {
+        this.setInnerHTML(this.props.html)
+    }
+    componentDidUpdate () {
+        this.setInnerHTML(this.props.html)
+    }
+    render () {
+        return (
+            <section className="Preview">
+                <div id="preview">
+                </div>
+            </section>
+        )
+    }
 }

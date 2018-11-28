@@ -2,14 +2,12 @@ import React from 'react'
 
 export default (props) => {
     return (
-        <section>
+        <section className="Editor">
             <textarea
                 value={props.text}
                 onChange={props.onChange}      
                 name=""
-                id="editor"
-                cols="30"
-                rows="10"></textarea>
+                id="editor"></textarea>
         </section>
     )
 }

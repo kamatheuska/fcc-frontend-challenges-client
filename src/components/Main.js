@@ -1,25 +1,49 @@
 import React from 'react'
+import marked from 'marked'
+import hljs from 'highlight.js'
+
 import Editor from './Editor'
 import Preview from './Preview'
+import initialText from '../assets/initialText'
+
+marked.setOptions({
+    breaks: true,
+    highlight: function(code) {
+        return hljs.highlightAuto(code)
+    }
+})
 
 export default class Main extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: 'this is a test'
+            text: initialText,
+            markdown: ''
         }
         this.onTextChange = this.onTextChange.bind(this)
+        this.setMarkdownText = this.setMarkdownText.bind(this)
     }
+
     onTextChange (e) {
-        this.setState({
-            text: e.target.value
-        })
+        this.setState({ text: e.target.value })
+        this.setMarkdownText(e.target.value)
     }
+
+    setMarkdownText (text) {
+        this.setState({ markdown: marked(text) })
+    }
+
+    componentDidMount() {
+        this.setMarkdownText(this.state.text)
+    }
+
     render() {
         return (
-            <div>
-                <Editor text={ this.state.text } onChange={ this.onTextChange }/>
-                <Preview text={ this.state.text } />
+            <div class="container">
+                <div className="FCC__MarkdownPreviewer">
+                    <Editor text={ this.state.text } onChange={ this.onTextChange }/>
+                    <Preview html={ this.state.markdown } />
+                </div>
             </div>
         )
     }
