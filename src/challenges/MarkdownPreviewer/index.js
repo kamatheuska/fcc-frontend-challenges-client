@@ -1,10 +1,10 @@
 import React from 'react'
 import marked from 'marked'
 import hljs from 'highlight.js'
-
 import Editor from './Editor'
 import Preview from './Preview'
-import initialText from '../assets/initialText'
+import initialText from './initialText'
+import { addFccScript } from '../../helpers'
 
 marked.setOptions({
     breaks: true,
@@ -13,7 +13,7 @@ marked.setOptions({
     }
 })
 
-export default class Main extends React.Component {
+export default class MarkdownPreviewer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,17 +34,24 @@ export default class Main extends React.Component {
     }
 
     componentDidMount() {
-        this.setMarkdownText(this.state.text)
+        if (this.props.show) {
+            addFccScript()
+            this.setMarkdownText(this.state.text)
+        }
     }
 
     render() {
-        return (
-            <div class="container">
-                <div className="FCC__MarkdownPreviewer">
-                    <Editor text={ this.state.text } onChange={ this.onTextChange }/>
-                    <Preview html={ this.state.markdown } />
+        if (this.props.show) {
+            return (
+                <div class="container">
+                    <div className="FCC__MarkdownPreviewer">
+                        <Editor text={ this.state.text } onChange={ this.onTextChange }/>
+                        <Preview html={ this.state.markdown } />
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            return ( <h1>NADA</h1> )
+        }
     }
 }
