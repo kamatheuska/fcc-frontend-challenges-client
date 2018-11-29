@@ -34,24 +34,16 @@ export default class MarkdownPreviewer extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.show) {
-            addFccScript()
-            this.setMarkdownText(this.state.text)
-        }
+        addFccScript()
+        this.setMarkdownText(this.state.text)
     }
 
     render() {
-        if (this.props.show) {
-            return (
-                <div class="container">
-                    <div className="FCC__MarkdownPreviewer">
-                        <Editor text={ this.state.text } onChange={ this.onTextChange }/>
-                        <Preview html={ this.state.markdown } />
-                    </div>
-                </div>
-            )
-        } else {
-            return ( <h1>NADA</h1> )
-        }
+        return (
+            <div className="FCC__MarkdownPreviewer">
+                <Editor text={ this.state.text } onChange={ this.onTextChange }/>
+                <Preview html={ this.state.markdown } />
+            </div>
+        )
     }
 }
