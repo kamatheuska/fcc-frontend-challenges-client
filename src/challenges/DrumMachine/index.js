@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default class ComponentName extends React.Component {
+export default class DrumMachine extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            FOO
+            
         }
     }
 
@@ -18,7 +18,7 @@ export default class ComponentName extends React.Component {
 
     render () {
         return (
-            <div className="ComponentName"></div>
+            <div className="DrumMachine"></div>
         )
     }
 }
