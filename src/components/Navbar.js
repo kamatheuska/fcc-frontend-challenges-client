@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default (props) => {
+const Navbar = props => {
     let routeNameList = props.routes.map(route => {
         return (
             <li
@@ -22,3 +22,5 @@ export default (props) => {
         </nav>
     )
 }
+
+export default Navbar

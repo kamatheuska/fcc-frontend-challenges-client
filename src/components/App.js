@@ -4,6 +4,9 @@ import DrumMachine from '../challenges/DrumMachine'
 import Navbar from '../components/Navbar'
 import '../assets/css/resetStyles.css'
 import '../assets/css/styles.css'
+import { addFccScript } from '../helpers'
+
+
 
 export default class App extends React.Component {
     constructor(props) {
@@ -11,13 +14,13 @@ export default class App extends React.Component {
         this.state = {
             challenges: [
                 {
-                    id: 1,
+                    id: '1',
                     name: 'Markdown Previewer',
                     component: MarkdownPreviewer,
                     active: false
                 },
                 {
-                    id: 2,
+                    id: '2',
                     name: 'Drum Machine',
                     component: DrumMachine,
                     active: false
@@ -25,55 +28,42 @@ export default class App extends React.Component {
             ]
         }
         this.handleNavbarClick = this.handleNavbarClick.bind(this)
-        this.getActiveChallengeIndex = this.getActiveChallengeIndex.bind(this)
+        this.toggleChallenge = this.toggleChallenge.bind(this)
     }
 
-    handleNavbarClick (e) {
-        let clickedId = e.target.getAttribute('id')
-        this.disableChallenges()
-        this.setActiveChallenge(clickedId)
+    componentDidMount() {
+        addFccScript()
+	}
+
+	handleNavbarClick (e) {
+        let id = e.target.getAttribute('id')
+		this.toggleChallenge(id)
     }
 
-    getActiveChallengeIndex () {
-        return this.state.challenges
-            .map((el, index) => el.active ? index : -1)
-            .find(el => el !== -1)
-    }
-    
-    setActiveChallenge (id) {
-        let index = this.getActiveChallengeIndex()
-        console.log(`Printing- - - - index:`, index)
+	toggleChallenge (id) {
+		this.setState(prevState => ({
+			challenges: prevState.challenges.map(obj => obj.id === id
+				? Object.assign(obj, { active: true })
+				: Object.assign(obj, { active: false }))
+		}))
     }
 
-    disableChallenges () {
-        this.state.challenges.forEach((challenge, index) => {
-            this.setState({
-                challenges: {
-                    active: false
-                }
-            })
-        })
-    }
+	activeChallenge () {
+		return this.state.challenges.find(challenge => challenge.active)
+	}
 
     render() {
-        let activeChallenge = this.state.challenges
-            .find(el => el.active)
-        let ActiveChallenge = activeChallenge
-            ? activeChallenge.component
-            : undefined
-        console.log(`Printing- - - - ActiveChallenge:`, ActiveChallenge)
+        let ActiveChallenge = this.activeChallenge()
+            ? this.activeChallenge().component
+			: () => <h2>Please select a challenge</h2>
         return (
             <React.StrictMode>
                 <Navbar
                     onClick={ this.handleNavbarClick }
                     routes={ this.state.challenges }
                 />
-                <div className="container__challenge">
-                    {
-                        activeChallenge
-                            ? <ActiveChallenge />
-                            : <h2>Please select a challenge</h2>
-                    }
+				<div className="container__challenge">
+					<ActiveChallenge />
                 </div>
             </React.StrictMode>
         )
